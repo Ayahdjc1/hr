@@ -1,0 +1,176 @@
+openapi: 3.0.3
+info:
+  title: VacMatch.AI API
+  version: "1.0.0"
+  description: |
+    API для автоматизированной оценки кандидатов на основе нейросетей VacNet и AnsNet.
+
+servers:
+  - url: http://localhost:5000
+    description: Локальный сервер
+
+paths:
+
+  /login:
+    post:
+      summary: Авторизация пользователя
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - email
+                - password
+      responses:
+        '302':
+          description: Перенаправление в панель при успешном входе
+
+  /signup:
+    post:
+      summary: Регистрация нового пользователя
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                confirmPassword:
+                  type: string
+              required:
+                - name
+                - email
+                - password
+                - confirmPassword
+      responses:
+        '302':
+          description: Перенаправление на страницу входа
+
+  /dashboard:
+    get:
+      summary: Получение списка вакансий
+      responses:
+        '200':
+          description: Успешный возврат HTML с панелью
+
+  /vacancy/new:
+    post:
+      summary: Создание новой вакансии
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+              required:
+                - text
+      responses:
+        '302':
+          description: Перенаправление на форму теста
+
+  /vacancy/{vacancy_id}/evaluate:
+    post:
+      summary: Ручная оценка кандидата
+      parameters:
+        - name: vacancy_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              additionalProperties:
+                type: string
+      responses:
+        '302':
+          description: Перенаправление на результат
+
+  /test/{vacancy_id}:
+    post:
+      summary: Прохождение теста кандидатом
+      parameters:
+        - name: vacancy_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                full_name:
+                  type: string
+                answer{question_id}:
+                  type: string
+      responses:
+        '302':
+          description: Перенаправление на страницу результата
+
+  /test/result/{session_id}:
+    get:
+      summary: Получение результатов теста
+      parameters:
+        - name: session_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: HTML со сводкой, оценками и ответами
+
+  /vacancy/{vacancy_id}/result:
+    get:
+      summary: Получение общего отчета по вакансии
+      parameters:
+        - name: vacancy_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: HTML-таблица с итогами по кандидатам
+
+  /vacancy/{vacancy_id}/delete:
+    post:
+      summary: Удаление вакансии
+      parameters:
+        - name: vacancy_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '302':
+          description: Перенаправление на панель после удаления
+
+components:
+  securitySchemes:
+    sessionCookie:
+      type: apiKey
+      in: cookie
+      name: session

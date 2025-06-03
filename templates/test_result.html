@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Результаты тестирования | VacMatch.AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-xl font-bold text-blue-600"><a href="/">VacMatch.AI</a></h1>
+      <nav class="space-x-4">
+        <a href="/dashboard" class="text-gray-700 hover:text-blue-600">Панель</a>
+        <a href="/logout" class="text-red-500 hover:text-red-700">Выйти</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="flex-1 max-w-6xl mx-auto px-4 py-10">
+    <h2 class="text-3xl font-bold mb-6">Результаты теста</h2>
+
+    <!-- Оценка -->
+    <div class="bg-white p-6 rounded-2xl shadow mb-8">
+      <p class="text-lg font-semibold">Итоговая оценка:</p>
+      <div class="mt-2 text-4xl font-bold 
+        {% if final_score >= 0.75 %}text-green-600
+        {% elif final_score >= 0.3 %}text-yellow-600
+        {% else %}text-red-600{% endif %}">
+        {{ final_score }}
+      </div>
+      <p class="text-sm text-gray-500 mt-1">* Рассчитана по взвешенной формуле: важность × оценка</p>
+    </div>
+
+    <!-- Сводка -->
+    <div class="bg-blue-50 p-6 rounded-xl shadow mb-8 border border-blue-200">
+      <h3 class="text-xl font-semibold mb-2">Сводка от AI</h3>
+      <pre class="text-sm whitespace-pre-wrap">{{ summary }}</pre>
+    </div>
+
+    <!-- Ответы -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {% for q, a, s, w in answers %}
+        <div class="bg-white p-5 rounded-xl shadow border border-gray-200">
+          <p class="text-sm text-gray-500 mb-1">Вопрос (важность: {{ w }})</p>
+          <p class="font-semibold text-gray-800 mb-3">{{ q }}</p>
+          <p class="text-sm text-gray-500">Ответ:</p>
+          <div class="bg-gray-50 p-3 rounded border mt-1">{{ a }}</div>
+          <div class="mt-4">
+            <span class="text-sm font-medium text-gray-600">Оценка:</span>
+            <span class="text-base font-bold {% if s >= 0.75 %}text-green-600{% elif s >= 0.3 %}text-yellow-600{% else %}text-red-600{% endif %}">
+              {{ s }}
+            </span>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </main>
+
+  <footer class="bg-white border-t py-6 text-center text-sm text-gray-500">
+    <p>&copy; 2025 VacMatch.AI — Результаты теста</p>
+  </footer>
+
+</body>
+</html>

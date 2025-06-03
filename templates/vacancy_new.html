@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Создать вакансию | VacMatch.AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-xl font-bold text-blue-600"><a href="/">VacMatch.AI</a></h1>
+      <nav class="space-x-4">
+        <a href="/dashboard" class="text-gray-700 hover:text-blue-600">Панель</a>
+        <a href="/logout" class="text-red-500 hover:text-red-700">Выйти</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main style="margin-left: 10vw; margin-right: 10vw; max-width:100vw" class="flex-1 max-w-4xl px-4 py-10">
+    <h2 class="text-2xl font-bold mb-6">Создать вакансию</h2>
+
+    <form method="POST" class="bg-white p-6 rounded-xl shadow space-y-6" onsubmit="showLoader()">
+      <div>
+        <label for="text" class="block text-lg font-semibold mb-2">Описание вакансии</label>
+        <textarea id="text" name="text" rows="10" class="w-full border border-gray-300 p-3 rounded-xl focus:outline-none focus:ring focus:border-blue-300" placeholder="Введите полное описание вакансии..." required></textarea>
+      </div>
+
+      <div id="loading" class="hidden text-blue-600 text-sm flex items-center gap-2">
+        <svg class="animate-spin h-5 w-5 text-blue-500" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+        </svg>
+        Идёт генерация теста. Вы будете перенаправлены в панель, когда всё будет готово.
+      </div>
+
+      <div class="text-right">
+        <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700">
+          Сгенерировать тест
+        </button>
+      </div>
+    </form>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t py-6 text-center text-sm text-gray-500">
+    <p>&copy; 2025 VacMatch.AI — Создание вакансии</p>
+  </footer>
+
+  <script>
+    function showLoader() {
+      document.querySelector('#loading').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>

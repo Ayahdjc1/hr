@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Оценка вручную | VacMatch.AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
+  <!-- Navbar -->
+  <header class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-xl font-bold text-blue-600"><a href="/">VacMatch.AI</a></h1>
+      <nav class="space-x-4">
+        <a href="/dashboard" class="text-gray-700 hover:text-blue-600">Панель</a>
+        <a href="/logout" class="text-red-500 hover:text-red-700">Выйти</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="flex-1 max-w-4xl mx-auto px-4 py-10">
+    <h2 class="text-2xl font-bold mb-6">Ручная оценка кандидата</h2>
+
+    {% if questions %}
+      <form method="POST" class="space-y-6">
+        {% for q in questions %}
+          <div class="bg-white p-4 rounded-xl shadow border">
+            <p class="font-medium mb-2">{{ loop.index }}. {{ q[1] }}</p>
+            <textarea name="answer{{ q[0] }}" rows="4" required
+                      class="w-full border rounded-xl p-2 focus:outline-none focus:ring focus:border-blue-300"
+                      placeholder="Введите ответ..."></textarea>
+          </div>
+        {% endfor %}
+        <div class="text-right">
+          <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-700">
+            Оценить
+          </button>
+        </div>
+      </form>
+    {% else %}
+      <p class="text-gray-500">В этой вакансии пока нет вопросов для оценки.</p>
+    {% endif %}
+  </main>
+
+  <footer class="bg-white border-t py-6 text-center text-sm text-gray-500">
+    <p>&copy; 2025 VacMatch.AI — Ручная проверка</p>
+  </footer>
+</body>
+</html>

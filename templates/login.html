@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вход в VacMatch.AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2" defer></script>
+  <style>
+    .input-focus:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    }
+  </style>
+</head>
+<body class="bg-gray-50 flex items-center justify-center min-h-screen">
+
+  <div class="w-full max-w-sm p-8 bg-white rounded-2xl shadow-md" x-data="{ showError: false }">
+    <h1 class="text-2xl font-bold text-center text-blue-600 mb-6">Вход в VacMatch.AI</h1>
+    
+    <!-- Ошибка входа -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="mb-4 text-sm text-red-600">
+          <p>{{ messages[0] }}</p>
+        </div>
+      {% endif %}
+    {% endwith %}
+    
+    <form action="/login" method="POST" class="space-y-6">
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+        <input type="email" name="email" id="email" required
+               class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-xl shadow-sm input-focus focus:ring-blue-500 focus:border-blue-500 transition duration-300">
+      </div>
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700">Пароль</label>
+        <input type="password" name="password" id="password" required
+               class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-xl shadow-sm input-focus focus:ring-blue-500 focus:border-blue-500 transition duration-300">
+      </div>
+      <div class="flex items-center justify-between">
+        <a href="#" class="text-sm text-blue-600 hover:underline">Забыли пароль?</a>
+      </div>
+      <button type="submit"
+              class="w-full bg-blue-600 text-white py-2 px-4 rounded-xl hover:bg-blue-700 transition duration-300">Войти</button>
+    </form>
+    <p class="mt-6 text-center text-sm text-gray-500">Нет аккаунта? <a href="/signup" class="text-blue-600 hover:underline">Регистрация</a></p>
+  </div>
+
+</body>
+</html>

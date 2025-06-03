@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Панель HR | VacMatch.AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+  <!-- Navbar -->
+  <header class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-xl font-bold text-blue-600"><a href="/">VacMatch.AI</a></h1>
+      <nav class="space-x-4">
+        <a href="/vacancy/new" class="text-gray-700 hover:text-blue-600">Создать вакансию</a>
+        <a href="/logout" class="text-red-500 hover:text-red-700">Выйти</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main style="margin-left: 15vw; margin-right: 15vw;" class="flex-1 max-w-7xl px-4 py-10">
+    <h2 class="text-2xl font-bold mb-6">Ваши вакансии</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="mb-4">
+          {% for category, message in messages %}
+            <li class="text-sm text-{{ 'green-600' if category == 'success' else 'blue-600' }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {% if vacancies %}
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+  {% for v in vacancies %}
+    <div class="bg-white p-6 rounded-2xl shadow border border-gray-100 h-full flex flex-col justify-between min-h-[220px]">
+            <div class="flex items-center justify-between">
+              <h3 class="text-lg font-semibold">{{ v.title }}...</h3>
+              {% if v.status != 'Готово' %}
+                <svg class="animate-spin h-5 w-5 text-yellow-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                  <path class="opacity-75" fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                </svg>
+              {% endif %}
+            </div>
+            <p class="text-sm text-gray-500 mb-2">
+              Создано: {{ v.created_at.strftime('%d.%m.%Y') if v.created_at else 'неизвестно' }}
+            </p>
+            <span class="inline-block px-3 py-1 text-sm rounded-full 
+              {% if v.status == 'Готово' %}
+                bg-green-100 text-green-700
+              {% else %}
+                bg-yellow-100 text-yellow-700
+              {% endif %}">
+              {{ v.status }}
+            </span>
+
+            <div class="mt-4 flex flex-col space-y-2">
+              <a href="/test/{{ v.id }}" class="text-sm text-blue-600 hover:underline 
+                 {% if v.status != 'Готово' %}pointer-events-none opacity-50{% endif %}">
+                Посмотреть ссылку
+              </a>
+              <a href="/vacancy/{{ v.id }}/evaluate" class="text-sm text-blue-600 hover:underline 
+                 {% if v.status != 'Готово' %}pointer-events-none opacity-50{% endif %}">
+                Оценить вручную
+              </a>
+              <a href="/vacancy/{{ v.id }}/result" class="text-sm text-blue-600 hover:underline 
+                 {% if v.status != 'Готово' %}pointer-events-none opacity-50{% endif %}">
+                Общий отчёт
+              </a>
+              <form method="POST" action="/vacancy/{{ v.id }}/delete" onsubmit="return confirm('Удалить вакансию?')">
+                <button type="submit" class="text-sm text-red-600 hover:underline mt-2">Удалить вакансию</button>
+              </form>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-gray-500">У вас пока нет созданных вакансий.</p>
+    {% endif %}
+  </main>
+
+  <footer class="bg-white border-t py-6 text-center text-sm text-gray-500">
+    <p>&copy; 2025 VacMatch.AI — Панель управления</p>
+  </footer>
+</body>
+</html>

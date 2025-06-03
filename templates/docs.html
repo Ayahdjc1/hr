@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Документация API | VacMatch.AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist/swagger-ui.css">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+  <!-- Header -->
+  <header class="bg-white shadow sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <h1 class="text-xl font-bold text-blue-600"><a href="/">VacMatch.AI</a></h1>
+      <nav class="space-x-6">
+       {% if session.user_id %}
+          <a href="/dashboard" class="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700">Панель</a>
+        {% else %}
+          <a href="/login" class="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700">Войти</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="max-w-6xl mx-auto px-4 py-10 space-y-12">
+
+    <!-- Swagger UI -->
+    <section>
+      <h2 class="text-2xl font-bold mb-4">🧩 Swagger / OpenAPI</h2>
+      <p class="text-gray-600 mb-4">Ниже представлено описание REST API для интеграции с системой VacMatch.AI:</p>
+      <div id="swagger-ui" class="bg-white border rounded-xl shadow p-4"></div>
+    </section>
+
+    <!-- Примеры -->
+    <section>
+      <h2 class="text-2xl font-bold mb-4">🧠 Примеры prompt / completion</h2>
+      <div class="bg-gray-800 text-white text-sm p-4 rounded-xl space-y-4 overflow-x-auto">
+        <pre>{
+  "prompt": "Навык: SQL. Сформулируй вопрос к кандидату.",
+  "completion": "Как бы вы оптимизировали SQL-запрос для большого объема данных?"
+}</pre>
+        <pre>{
+  "prompt": "Вопрос: Расскажите про ваш опыт с Docker. Ответ: Участвовал в контейнеризации микросервисов.",
+  "completion": "0.85"
+}</pre>
+      </div>
+    </section>
+
+    <!-- Рекомендации -->
+    <section>
+      <h2 class="text-2xl font-bold mb-4">📋 Рекомендации по форматированию вакансий</h2>
+      <ul class="list-disc pl-6 space-y-2 text-gray-700">
+        <li>Используйте структуру: <strong>описание / требования / задачи</strong>.</li>
+        <li>Фокусируйтесь на ключевых навыках: избегайте воды.</li>
+        <li>Каждый абзац — отдельная мысль, используйте пробелы.</li>
+        <li>Примеры: <code>Python</code>, <code>Django</code>, <code>PostgreSQL</code>, <code>Git</code>.</li>
+      </ul>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t mt-10 py-6 text-center text-sm text-gray-500">
+    <p>&copy; 2025 VacMatch.AI — Документация API</p>
+  </footer>
+
+  <!-- Swagger Script -->
+  <script src="https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js"></script>
+  <script>
+    SwaggerUIBundle({
+      url: "/openapi.yaml", // Путь к вашему YAML-файлу OpenAPI
+      dom_id: '#swagger-ui',
+      presets: [SwaggerUIBundle.presets.apis],
+      layout: "BaseLayout"
+    });
+  </script>
+</body>
+</html>
